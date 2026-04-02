@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<robot name="agv">
+
+  <!-- ================================================================
+       TF Chain:
+         map → odom → base_footprint → base_link
+                                           ├── imu_link
+                                           ├── camera_mounting_link
+                                           │     └── camera_optical_link
+                                           └── camera_rgb_mounting_link
+                                                 └── camera_rgb_optical_link
+
+       Static transforms: robot_state_publisher (this URDF)
+       Dynamic transforms:
+         map          → odom           : rtabmap
+         odom         → base_footprint : icp_odometry
+
+       Coordinate conventions:
+         Robot body (REP-105): X+ right, Y+ forward, Z+ up
+         Camera body frame:    X+ right, Y+ down, Z+ rearward (INTO body, lens faces Z-)
+         ifm3d cloud origin:   Z- (out the lens)
+         Alignment rotation:   rpy="-1.5708 0 0" (-90° about X)
+           rotates camera Z- (out lens) → robot Y+ (forward) ✓
+  ================================================================ -->
+
+  <!-- Ground plane / odometry root -->
+  <link name="base_footprint"/>
+
+  <!-- Robot body — 0.07 m above ground (OVP811 VPU position) -->
+  <link name="base_link"/>
+  <joint name="base_footprint_to_base_link" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+    <origin xyz="0.0 0.0 0.07" rpy="0.0 0.0 0.0"/>
+  </joint>
+
+  <!-- IMU — co-located with base_link (OVP811 IMU is inside the VPU) -->
+  <link name="imu_link"/>
+  <joint name="base_link_to_imu" type="fixed">
+    <parent link="base_link"/>
+    <child link="imu_link"/>
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+  </joint>
+
+  <!-- ToF camera mounting point (O3R225 port0) — 0.7 m above base_link, forward-facing, no tilt -->
+  <link name="camera_mounting_link"/>
+  <joint name="base_link_to_camera_mounting" type="fixed">
+    <parent link="base_link"/>
+    <child link="camera_mounting_link"/>
+    <origin xyz="0.0 0.0 0.7" rpy="0.0 0.0 0.0"/>
+  </joint>
+
+  <!-- ToF camera optical frame
+       Camera datasheet: Z+ points INTO the body (rearward), lens faces Z-
+       ifm3d driver projects cloud along Z- (out the lens)
+       rpy="-1.5708 0 0": rotates camera Z- → robot Y+ (forward) -->
+  <link name="camera_optical_link"/>
+  <joint name="camera_mounting_to_optical" type="fixed">
+    <parent link="camera_mounting_link"/>
+    <child link="camera_optical_link"/>
+    <origin xyz="0.0 0.0 0.0" rpy="-1.5708 0.0 0.0"/>
+  </joint>
+
+  <!-- RGB camera mounting point (O3R225 port2) — same position as ToF head -->
+  <link name="camera_rgb_mounting_link"/>
+  <joint name="base_link_to_camera_rgb_mounting" type="fixed">
+    <parent link="base_link"/>
+    <child link="camera_rgb_mounting_link"/>
+    <origin xyz="0.0 0.0 0.7" rpy="0.0 0.0 0.0"/>
+  </joint>
+
+  <!-- RGB camera optical frame (same convention as ToF) -->
+  <link name="camera_rgb_optical_link"/>
+  <joint name="camera_rgb_mounting_to_optical" type="fixed">
+    <parent link="camera_rgb_mounting_link"/>
+    <child link="camera_rgb_optical_link"/>
+    <origin xyz="0.0 0.0 0.0" rpy="-1.5708 0.0 0.0"/>
+  </joint>
+
+</robot>

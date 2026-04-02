@@ -1,0 +1,18 @@
+# RGB camera head (port 2) for person detection
+
+/ifm3d/camera_rgb:
+  ros__parameters:
+    buffer_id_list:
+      - JPEG_IMAGE
+      - RGB_INFO
+    ip: 10.167.53.27
+    pcic_port: 50012
+    publish_uncompressed: true
+    tf:
+      base_frame_name: "base_link"
+      mounting_frame_name: "camera_rgb_mounting_link"
+      optical_frame_name: "camera_rgb_optical_link"
+      publish_base_to_mounting: false
+      publish_mounting_to_optical: false
+    use_sim_time: false
+    xmlrpc_port: 80

@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>agv_hmi</name>
+  <version>0.0.1</version>
+  <description>Operator HMI: turn-by-turn instructions from Nav2 path planning</description>
+  <maintainer email="bart@agv.local">bart</maintainer>
+  <license>Apache-2.0</license>
+
+  <depend>rclpy</depend>
+  <depend>std_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>nav_msgs</depend>
+  <depend>nav2_msgs</depend>
+  <depend>tf2_ros</depend>
+  <depend>tf2_geometry_msgs</depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>

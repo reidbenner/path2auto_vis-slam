@@ -1,0 +1,37 @@
+rtabmap:
+  ros__parameters:
+    frame_id: base_footprint
+    odom_frame_id: odom
+    map_frame_id: map
+
+    subscribe_odom_info: false
+    subscribe_depth: false
+    subscribe_scan: false
+    subscribe_scan_cloud: true
+    subscribe_rgb: false
+    subscribe_camera_info: false
+
+    # Loop closure — geometry only (ICP cloud)
+    Rtabmap/DetectionRate: "1"
+    Kp/MaxFeatures: "400"
+    Vis/MinInliers: "15"
+
+    # Map
+    Grid/CellSize: "0.05"
+    Grid/RangeMax: "4.0"
+    Grid/RayTracing: "true"
+    Grid/3D: "false"
+    Grid/MaxObstacleHeight: "0.5"
+
+    # TF timing — wait for odom->base_link to catch up to cloud timestamps
+    tf_delay: 0.05
+    tf_tolerance: 0.1
+
+    # Memory
+    Mem/IncrementalMemory: "true"
+    Mem/STMSize: "30"
+
+    database_path: "/home/bart/.ros/rtabmap.db"
+
+    # 3D assembled point cloud map (for Foxglove visualization)
+    cloud_output_voxel_size: 0.05

@@ -1,0 +1,35 @@
+icp_odometry:
+  ros__parameters:
+    frame_id: base_footprint   # icp_odometry publishes odom → base_footprint
+    odom_frame_id: odom
+    publish_tf: false    # EKF publishes odom->base_footprint TF
+
+    # Input: 3D point cloud from O3R port0
+    subscribe_scan_cloud: true
+
+    # IMU fusion — disabled until port6 PCIC access is resolved
+    subscribe_imu: false
+    wait_imu_to_init: false
+
+    # ICP parameters tuned for O3R225 ToF at 20 Hz
+    # At 20 Hz, inter-frame motion is small (~2.5cm at 0.5m/s) so ICP
+    # convergence is fast and tight thresholds are fine.
+    # MaxCorrespondenceDistance slightly relaxed to tolerate surface noise;
+    # MaxTranslation raised so fast rotation doesn't trigger false resets.
+    Icp/PointToPlane: "true"
+    Icp/Iterations: "20"          # fewer iterations OK at 20 Hz (small motion)
+    Icp/MaxCorrespondenceDistance: "0.15"  # was 0.1 — tolerate O3R noise better
+    Icp/MaxTranslation: "0.5"             # was 0.3 — less aggressive rejection
+    Icp/MaxRotation: "0.785"              # ~45 deg max per frame
+    Odom/GuessMotion: "true"
+
+    # Decimation: at 20 Hz we can use finer voxels for better accuracy
+    cloud_decimation: 2           # was 4 — keep more points at 20 Hz
+    cloud_max_depth: 4.0
+    cloud_min_depth: 0.1
+
+    # Deskewing requires per-point timestamps — O3R cloud only has x y z
+    deskewing: false
+
+    # Reject nearly empty frames
+    min_cloud_size: 200

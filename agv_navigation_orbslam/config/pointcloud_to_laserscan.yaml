@@ -1,0 +1,16 @@
+pointcloud_to_laserscan_node:
+  ros__parameters:
+    target_frame: base_link
+    transform_tolerance: 0.05
+
+    # Height band — captures obstacles at AGV body level
+    min_height: 0.05
+    max_height: 0.5
+
+    angle_min: -0.9163       # ~-52.5 deg (within O3R 105 deg FOV)
+    angle_max:  0.9163       # ~+52.5 deg
+    angle_increment: 0.00872 # 0.5 deg resolution
+    scan_time: 0.1           # 10 Hz matches camera
+    range_min: 0.1
+    range_max: 4.0
+    use_inf: true

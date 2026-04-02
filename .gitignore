@@ -1,0 +1,20 @@
+# External ROS2 packages (not our code)
+ifm3d-ros2/
+orb_slam3_ros2/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Colcon artifacts (never commit these)
+build/
+install/
+log/
+
+# Editor
+.vscode/
+*.swp
+
+# Model weights (large binary, copy manually)
+*.pt

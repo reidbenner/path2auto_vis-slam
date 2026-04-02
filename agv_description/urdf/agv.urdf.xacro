@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<robot name="agv" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- Root: base_link (robot center at floor level) -->
+  <link name="base_link"/>
+
+  <!-- Nav2 footprint (same origin as base_link for now) -->
+  <link name="base_footprint"/>
+  <joint name="base_footprint_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
+  <!-- ifm_base_link — OVP811 unit mounted 81.5 cm off the ground, facing +x flat -->
+  <link name="ifm_base_link"/>
+  <joint name="ifm_base_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="ifm_base_link"/>
+    <origin xyz="0.0 0.0 0.815" rpy="0.0 0.0 0.0"/>
+  </joint>
+
+  <!--
+    O3R225 camera mounting frame.
+    NOTE: All offsets are 0 for testing — camera coincident with base_link.
+    Replace with MCC calibration values (transX/Y/Z, rotX/Y/Z) when available.
+  -->
+  <link name="camera_mounting_link"/>
+  <joint name="camera_mount_joint" type="fixed">
+    <parent link="ifm_base_link"/>
+    <child link="camera_mounting_link"/>
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+  </joint>
+
+  <!--
+    Camera optical frame (ROS convention: Z forward, X right, Y down).
+    rpy="-1.5708 0 0": -90 deg about X rotates camera Z- (out lens) -> robot Y+ (forward).
+  -->
+  <link name="camera_optical_link"/>
+  <joint name="camera_optical_joint" type="fixed">
+    <parent link="camera_mounting_link"/>
+    <child link="camera_optical_link"/>
+    <origin xyz="0 0 0" rpy="-1.5708 0 0"/>
+  </joint>
+
+  <!--
+    RGB camera (port2) mounting + optical frames.
+    Both heads are in the same OVP811 housing so offset is near-zero.
+    Replace xyz with actual MCC calibration values when measured.
+  -->
+  <link name="camera_rgb_mounting_link"/>
+  <joint name="camera_rgb_mount_joint" type="fixed">
+    <parent link="ifm_base_link"/>
+    <child link="camera_rgb_mounting_link"/>
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+  </joint>
+
+  <link name="camera_rgb_optical_link"/>
+  <joint name="camera_rgb_optical_joint" type="fixed">
+    <parent link="camera_rgb_mounting_link"/>
+    <child link="camera_rgb_optical_link"/>
+    <origin xyz="0 0 0" rpy="-1.5708 0 0"/>
+  </joint>
+
+  <!--
+    IMU frame (IIM42652 on port6, inside OVP811 enclosure).
+    NOTE: Zero offset for testing — update with actual OVP position on robot.
+  -->
+  <link name="imu_link"/>
+  <joint name="imu_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="imu_link"/>
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+  </joint>
+
+</robot>

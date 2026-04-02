@@ -1,0 +1,29 @@
+person_detector:
+  ros__parameters:
+    # YOLOv8 model (auto-downloaded on first run)
+    model: "yolov8n.pt"
+    # Minimum confidence for person detection
+    confidence_threshold: 0.5
+    # Only detect class 0 (person) from COCO
+    target_class_id: 0
+
+    # Proximity zones (meters)
+    danger_zone: 1.0
+    warning_zone: 2.5
+    caution_zone: 4.0
+
+    # Depth calculation: use median depth in center region of bounding box
+    depth_roi_scale: 0.4
+
+    # Publish annotated image with bounding boxes
+    publish_annotated: true
+
+    # Input topics (ifm O3R defaults)
+    rgb_topic: "/ifm3d/camera_rgb/rgb"
+    depth_topic: "/ifm3d/camera/distance"
+
+    # Depth scale: ifm distance image is in meters (float32)
+    depth_scale: 1.0
+
+    # Rate limit detection (Hz) - set 0 for no limit
+    max_detection_rate: 10.0

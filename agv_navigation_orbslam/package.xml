@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>agv_navigation_orbslam</name>
+  <version>0.0.1</version>
+  <description>ORB-SLAM3 + Nav2 navigation for OVP811 + O3R225 AGV</description>
+  <maintainer email="todo@todo.com">agv</maintainer>
+  <license>GPLv3</license>
+
+  <exec_depend>orb_slam3_ros2</exec_depend>
+  <exec_depend>pointcloud_to_laserscan</exec_depend>
+  <exec_depend>nav2_bringup</exec_depend>
+  <exec_depend>launch</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
